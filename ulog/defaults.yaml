@@ -9,21 +9,7 @@ ulog:
     file  : "syslog"
     level : 3
 
-  plugins:
-    - inppkt_NFLOG
-    - inppkt_ULOG
-    - inppkt_UNIXSOCK
-    - inpflow_NFCT
-    - filter_IFINDEX
-    - filter_IP2STR
-    - filter_IP2BIN
-    - filter_PRINTPKT
-    - filter_HWHDR
-    - filter_PRINTFLOW
-    - output_LOGEMU
-    - output_SYSLOG
-    - raw2packet_BASE
-    - inpflow_NFACCT
+  plugins: []
 
   # Ulog will fail if it has no "sections" config.
   # Sections config should be in pillar.
