@@ -1,0 +1,29 @@
+{%- import "ulog/macros.sls" as macros -%}
+[global]
+######################################################################
+# GLOBAL OPTIONS
+######################################################################
+
+# logfile for status messages
+logfile="{{ cfg.log.file }}"
+
+# loglevel: debug(1), info(3), notice(5), error(7) or fatal(8) (default 5)
+loglevel={{ cfg.log.level }}
+
+
+######################################################################
+# PLUGIN OPTIONS
+######################################################################
+
+# Plugins.
+{%- for plugin_name in cfg.plugins %}
+plugin="/usr/lib/x86_64-linux-gnu/ulogd/ulogd_{{ plugin_name}}.so"
+{%- endfor %}
+
+#
+# Stacks.
+{{ macros.format_stacks(cfg.sections) }}
+
+#
+# Inputs and outputs.
+{{ macros.format_sections(cfg.sections) }}

@@ -1,0 +1,23 @@
+{% import_yaml slspath + "/defaults.yaml" as defaults %}
+
+{% set ulog = salt['pillar.get'](
+  'ulog',
+  default=defaults.ulog,
+  merge=True
+) %}
+
+# Append to stack..
+{% for section_name, section_config in ulog.sections.items() %}
+  {% for config_name, config_vars in section_config.config.items() %}
+
+    {% set config_name_full = "%s_%s" % (section_name, config_name) %}
+    {% set stack_name = "%s:%s" % (config_name_full, config_vars.plugin) %}
+
+    {% if 'input' in config_name and stack_name not in ulog.sections[section_name].stack %}
+      {% do ulog.sections[section_name].stack.insert(0, stack_name) %}
+    {% elif 'output' in config_name and stack_name not in ulog.sections[section_name].stack %}
+      {% do ulog.sections[section_name].stack.append(stack_name) %}
+    {% endif %}
+
+  {% endfor %}
+{% endfor %}
