@@ -25,7 +25,7 @@ ulog:
     - raw2packet_BASE
     - inpflow_NFACCT
 
-  # Ulog will fail if it has no "sections" config.
+  # Ulog will fail if "sections" has no config inside it.
   # Sections config should be in pillar.
   sections:
 
