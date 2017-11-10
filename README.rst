@@ -1,7 +1,7 @@
 ======
 ulog
 ======
-Install and configure a `ulogd <https://www.netfilter.org/projects/ulogd/>`_ the userspace logging daemon for netfilter/iptables related logging.
+Install and configure `ulogd <https://www.netfilter.org/projects/ulogd/>`_ the userspace logging daemon for netfilter/iptables related logging.
 
 .. Note::
 
