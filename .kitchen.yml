@@ -1,0 +1,82 @@
+---
+driver:
+  name: docker
+  use_sudo: false
+  privileged: true
+
+provisioner:
+  name: salt_solo
+  log_level: debug
+  require_chef: false
+  formula: ulog
+  state_top:
+    base:
+      '*':
+        - ulog
+
+platforms:
+  - name: ubuntu-14.04
+  - name: debian-jessie
+    driver_config:
+      run_command: /sbin/init
+
+suites:
+  - name: ulogd2
+    provisioner:
+      pillars:
+        top.sls:
+          base:
+            '*':
+              - ulog
+        ulog.sls:
+          ulog:
+            pkgs:
+              - ulogd2
+          
+            service:
+              name: ulogd2
+          
+            log:
+              file: "syslog"
+              level: 3
+          
+            plugins:
+              - inppkt_NFLOG
+              - inppkt_ULOG
+              - inppkt_UNIXSOCK
+              - inpflow_NFCT
+              - filter_IFINDEX
+              - filter_IP2STR
+              - filter_IP2BIN
+              - filter_PRINTPKT
+              - filter_HWHDR
+              - filter_PRINTFLOW
+              - output_LOGEMU
+              - output_SYSLOG
+              - raw2packet_BASE
+              - inpflow_NFACCT
+          
+            # Ulog will fail if "sections" has no config inside it.
+            # Sections config should be in pillar.
+            sections:
+          
+              iptables:
+          
+                stack:
+                  # DO NOT change the order of this list.
+                  - "base1:BASE"
+                  - "ifi1:IFINDEX"
+                  - "ip2str1:IP2STR"
+                  - "print1:PRINTPKT"
+          
+                config:
+                  input01:
+                    plugin: NFLOG
+                    vars:
+                      group: 30
+          
+                  output01:
+                    plugin: LOGEMU
+                    vars:
+                      file: /var/log/iptables.log
+                      sync: 1
