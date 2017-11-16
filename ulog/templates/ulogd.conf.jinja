@@ -17,7 +17,7 @@ loglevel={{ cfg.log.level }}
 
 # Plugins.
 {%- for plugin_name in cfg.plugins %}
-plugin="/usr/lib/x86_64-linux-gnu/ulogd/ulogd_{{ plugin_name}}.so"
+plugin="/usr/lib/{{ salt['grains.get']('cpuarch')}}-linux-gnu/ulogd/ulogd_{{ plugin_name}}.so"
 {%- endfor %}
 
 #
