@@ -1,18 +1,23 @@
 ---
 driver:
-  name: proxy
-  host: localhost
-
-transport:
-  port: 22
-  username: travis
-  password: travis
+  name: docker
+  use_sudo: false
+  privileged: true
+  require_chef_omnibus: false
 
 verifier:
   name: inspec
 
 platforms:
   - name: ubuntu-14.04
+    driver_config:
+      disable_upstart: false
+      image: ubuntu-upstart:14.04
+      run_command: /sbin/init
+
+  - name: ubuntu-16.04
+    driver_config:
+      run_command: /sbin/init
 
 provisioner:
   name: salt_solo
